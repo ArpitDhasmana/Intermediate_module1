@@ -89,39 +89,6 @@ Withdraws the specified amount of funds from the contract balance to the owner's
 
 A function that always reverts with the message "This function always reverts". Useful for testing revert scenarios.
 
-## Example Usage
-
-### Adding Stock
-
-```solidity
-LocalStore store = new LocalStore();
-store.addStock("Apple", 100);
-```
-
-### Updating Price
-
-```solidity
-store.updatePrice("Apple", 1 ether);
-```
-
-### Removing Stock
-
-```solidity
-store.removeStock("Apple", 20);
-```
-
-### Checking Stock and Price
-
-```solidity
-(uint stock, uint price) = store.check("Apple");
-```
-
-### Withdrawing Funds
-
-```solidity
-store.withdrawFunds(0.5 ether);
-```
-
 ## License
 
 This project is licensed under the MIT License.
