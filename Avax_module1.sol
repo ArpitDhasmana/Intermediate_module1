@@ -45,11 +45,6 @@ contract LocalStore {
         return (stock[product], prices[product]);
     }
     
-    function withdrawFunds(uint amount) public onlyOwner {
-        require(amount <= address(this).balance, "Not enough funds available");
-        payable(owner).transfer(amount);
-        assert(address(this).balance >= 0);
-    }
     function testRevert() public pure {
         revert("This function always reverts");
     }
