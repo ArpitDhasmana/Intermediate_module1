@@ -1,20 +1,56 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.12 <0.9.0;
+pragma solidity ^0.8.0;
 
-contract Avax_module1{
-  uint public maxLim=100;
-  uint public minLim=1;
-
-  function set(uint _newLim) public{
-    require(_newLim>=minLim && _newLim<=maxLim,"new limit should be between 1 and 100");
-       maxLim=_newLim;
- }
-  function checkNum(uint _number) public view returns(string memory){
-    assert(_number!=0);
-    if(_number>maxLim){
-      revert("number exceeds maxlimit");
+contract LocalStore {
+    address public owner;
+    mapping(string => uint) public prices;
+    mapping(string => uint) public stock;
+    
+    event Stock(string product, uint quantity);
+    event Price(string product, uint newPrice);
+    
+    constructor() {
+        owner = msg.sender;
     }
-    return "Number is within the acceptable range";
-  }
-
+    
+    modifier onlyOwner() {
+        require(msg.sender == owner, "You are not the owner of the store");
+        _;
+    }
+    
+    function addStock(string memory product, uint quantity) public onlyOwner {
+        require(quantity > 0, "Quantity > zero is a must");
+        stock[product] += quantity;
+        emit Stock(product, quantity);
+        assert(stock[product] >= quantity);
+    }
+    
+    function updatePrice(string memory product, uint newPrice) public onlyOwner {
+        require(newPrice > 0, "Price > zero is a must");
+        prices[product] = newPrice;
+        emit Price(product, newPrice);
+        assert(prices[product] == newPrice);
+    }
+    
+    function removeStock(string memory product, uint quantity) public onlyOwner {
+        require(quantity > 0, "Quantity > zero is a must");
+        require(stock[product] >= quantity, "Not enough stock to remove");
+        
+        stock[product] -= quantity;
+        emit Stock(product, stock[product]);
+        assert(stock[product] >= 0);
+    }
+    
+    function check(string memory product) public view returns (uint,uint) {
+        return (stock[product], prices[product]);
+    }
+    
+    function withdrawFunds(uint amount) public onlyOwner {
+        require(amount <= address(this).balance, "Not enough funds available");
+        payable(owner).transfer(amount);
+        assert(address(this).balance >= 0);
+    }
+    function testRevert() public pure {
+        revert("This function always reverts");
+    }
 }
