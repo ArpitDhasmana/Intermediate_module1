@@ -6,7 +6,7 @@ The `LocalStore` smart contract is a simple store management system built on the
 
 ## Features
 
-- **Add Stock**: Add a specified quantity of a product to the store's inventory.
+- **Add Stock**: Add a specified quantity of a product to the store's inventory.   
 - **Update Price**: Update the price of a product.
 - **Remove Stock**: Remove a specified quantity of a product from the store's inventory.
 - **Check Stock and Price**: View the current stock and price of a product.
